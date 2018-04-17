@@ -84,7 +84,7 @@ class Post
 
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      *
      * @var \DateTime
      */
@@ -93,7 +93,6 @@ class Post
 
     public function __construct()
     {
-        $this->title = str_repeat("toto ", 20);
         $this->dateCreated = new \Datetime();
     }
 

@@ -14,12 +14,7 @@
 <body>
 {% block menu %}
 
-   {# {% include 'menu.html.twig' %} #}
-
-    {{ render(controller(
-    'AppBundle\\Controller\\DefaultController::getMenuAction',
-    {'route': app.request.attributes.get('_route')}
-    )) }}
+    {% include 'menu.html.twig' %}
 
     <div class="container">
     {% if app.user %}

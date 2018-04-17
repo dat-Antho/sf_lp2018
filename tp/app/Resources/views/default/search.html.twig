@@ -15,6 +15,7 @@
                                 {{ item.content }}
                             </div>
                         </div>
+                        <a href = "{{ path('post_detail',{"slug" : item.slug}) }}">Voir</a>
                     </div>
                 {% endfor %}
             </div>
