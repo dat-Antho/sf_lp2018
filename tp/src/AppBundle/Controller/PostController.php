@@ -19,9 +19,7 @@ class PostController extends Controller
      * Finds and displays a post entity.
      *
      * @Route("/{slug}", name="post_detail")
-     *
      * @param Post $post
-     * @ParamConverter("post", class="AppBundle\Entity\Post", options={"slug" = "slug"})
      * @return Response
      */
     public function showAction(Post $post)
