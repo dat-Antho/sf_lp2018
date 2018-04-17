@@ -254,5 +254,14 @@ class DefaultController extends Controller
 
         return $this->redirectToRoute('demo_page_listing');
     }
+    
+    /**
+     * @Route("/presentation", name="presentation_page")
+     */
+    public function presentationPageAction(){
+        $message = "Bienvenue sur la page de présentation";
+        
+        return $this->render('default/presentation.html.twig',['message' => $message]);
+    }
 
 }
