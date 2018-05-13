@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-
+use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Item
  *
@@ -85,6 +85,11 @@ class Item
      */
     private $users;
 
+    /**
+     * @Gedmo\Slug(fields={"titre"},updatable=false)
+     * @ORM\Column(length=128, unique=true)
+     */
+    private $slug;
 
 //    /**
 //     * @var integer
@@ -428,4 +433,21 @@ class Item
     {
         return $this->votes;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param mixed $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+
 }

@@ -29,7 +29,7 @@ class Vote
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vote", inversedBy="votes")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Item", inversedBy="votes")
      */
     private $item;
 
@@ -74,7 +74,7 @@ class Vote
      *
      * @return Vote
      */
-    public function setItem(\AppBundle\Entity\Vote $item = null)
+    public function setItem(\AppBundle\Entity\Item $item = null)
     {
         $this->item = $item;
 
@@ -84,7 +84,7 @@ class Vote
     /**
      * Get item
      *
-     * @return \AppBundle\Entity\Vote
+     * @return \AppBundle\Entity\Item
      */
     public function getItem()
     {

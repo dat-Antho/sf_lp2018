@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 class VoteController extends Controller
 {
     /**
-     * @Route("/", name="voteForItem")
+     * @Route("/vote/{slug}", name="voteForItem")
      *
      * @param Item $item
      * @return Response

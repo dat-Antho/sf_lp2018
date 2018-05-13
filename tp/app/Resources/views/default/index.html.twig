@@ -4,27 +4,31 @@
     <h1>Bienvenue sur mon site</h1>
 
     <h2>tu préfères</h2>
-    {% for item in items|slice(1, 2) %}
-        <div class="row">
-        {% dump(vich_uploader_asset(item, 'image')) %}
-            <div class="col-md-6">
-                <div class="card" style="width: 25rem;">
-                    <img class="card-img-top"
-                         src="{% if item.imageName is not null%}
+    {% if items|length < 2 %}
+        Pas assez de choix repasser plus tard :)
+        {% else %}
+            <div class="row">
+                {% for item in items|slice(0, 2) %}
+                    {% dump(vich_uploader_asset(item, 'image')) %}
+                    <div class="col-md-6">
+                        <div class="card" style="width: 25rem;">
+                            <img class="card-img-top"
+                                 src="{% if item.imageName is not null%}
                                 {{ vich_uploader_asset(item, 'image') }}
                                {% else %}https://picsum.photos/500?random
                                 {% endif %}" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ item.titre }}</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                            card's content.</p>
-                        <div class="text-center">
-                            <a href="#" class="btn btn-primary ">Voter</a>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ item.titre }}</h5>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                                    card's content.</p>
+                                <div class="text-center">
+                                    <a href="{{ path('voteForItem',{'slug' : item.slug}) }}" class="btn btn-primary ">Voter</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-
+                {% endfor %}
             </div>
-    {% endfor %}
-        </div>
+    {% endif %}
+
 {% endblock %}
