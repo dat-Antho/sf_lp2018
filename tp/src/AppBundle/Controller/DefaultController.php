@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Post;
+use AppBundle\Service\ItemFinder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -14,9 +15,13 @@ class DefaultController extends Controller
     /**
      * @Route("/", name="homepage")
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request,ItemFinder $itemFinder)
     {
-        return $this->render('default/index.html.twig', []);
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+        $items = $itemFinder->getItemForUser($user);
+        shuffle($items);
+        return $this->render('default/index.html.twig', ['items' => $items]);
     }
 
     /**

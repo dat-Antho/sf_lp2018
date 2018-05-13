@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -23,21 +24,28 @@ class User extends BaseUser
      */
     private $proposals;
 
+    /**
+     * One user has Many votes.
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Vote", mappedBy="user")
+     */
+    private $votes;
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
-        // your own logic
+        $this->votes = new ArrayCollection();
+        parent::addRole('ROLE_MEMBER');
     }
+
+
 
     /**
      * Add proposal
      *
-     * @param \AppBundle\Entity\User $proposal
+     * @param \AppBundle\Entity\Item $proposal
      *
      * @return User
      */
-    public function addProposal(\AppBundle\Entity\User $proposal)
+    public function addProposal(\AppBundle\Entity\Item $proposal)
     {
         $this->proposals[] = $proposal;
 
@@ -47,9 +55,9 @@ class User extends BaseUser
     /**
      * Remove proposal
      *
-     * @param \AppBundle\Entity\User $proposal
+     * @param \AppBundle\Entity\Item $proposal
      */
-    public function removeProposal(\AppBundle\Entity\User $proposal)
+    public function removeProposal(\AppBundle\Entity\Item $proposal)
     {
         $this->proposals->removeElement($proposal);
     }
@@ -62,5 +70,39 @@ class User extends BaseUser
     public function getProposals()
     {
         return $this->proposals;
+    }
+
+    /**
+     * Add vote
+     *
+     * @param \AppBundle\Entity\Vote $vote
+     *
+     * @return User
+     */
+    public function addVote(\AppBundle\Entity\Vote $vote)
+    {
+        $this->votes[] = $vote;
+
+        return $this;
+    }
+
+    /**
+     * Remove vote
+     *
+     * @param \AppBundle\Entity\Vote $vote
+     */
+    public function removeVote(\AppBundle\Entity\Vote $vote)
+    {
+        $this->votes->removeElement($vote);
+    }
+
+    /**
+     * Get votes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVotes()
+    {
+        return $this->votes;
     }
 }

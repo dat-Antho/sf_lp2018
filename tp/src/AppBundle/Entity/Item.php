@@ -86,14 +86,17 @@ class Item
     private $users;
 
 
+//    /**
+//     * @var integer
+//     *
+//     * @ORM\Column(name="nbVote", type="integer", nullable=true)
+//     */
+//    private $nbVote;
+
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="nbVote", type="integer", nullable=true)
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Vote", mappedBy="item")
      */
-    private $nbVote;
-
-
+    private $votes;
 
     /**
      * Get id
@@ -331,6 +334,7 @@ class Item
     public function __construct()
     {
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->votes = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -389,5 +393,39 @@ class Item
     public function getUsers()
     {
         return $this->users;
+    }
+
+    /**
+     * Add vote
+     *
+     * @param \AppBundle\Entity\Vote $vote
+     *
+     * @return Item
+     */
+    public function addVote(\AppBundle\Entity\Vote $vote)
+    {
+        $this->votes[] = $vote;
+
+        return $this;
+    }
+
+    /**
+     * Remove vote
+     *
+     * @param \AppBundle\Entity\Vote $vote
+     */
+    public function removeVote(\AppBundle\Entity\Vote $vote)
+    {
+        $this->votes->removeElement($vote);
+    }
+
+    /**
+     * Get votes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVotes()
+    {
+        return $this->votes;
     }
 }
