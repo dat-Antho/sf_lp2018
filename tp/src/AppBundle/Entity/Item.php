@@ -99,7 +99,7 @@ class Item
 //    private $nbVote;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Vote", mappedBy="item")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Vote", mappedBy="item", fetch="EAGER")
      */
     private $votes;
 

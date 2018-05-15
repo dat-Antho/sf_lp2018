@@ -54,5 +54,33 @@ class ItemFinder
 
         return false;
     }
+
+    /**
+     * return an array containg the item with the most votes for each itemCategory
+     *
+     * @return array
+     */
+    public function findWinnerForEachCategory(){
+        $categories = $this->em->getRepository('AppBundle:ItemCategory')->findAll();
+
+        $winners = array();
+        foreach ($categories as $category){
+            $items = $this->em->getRepository('AppBundle:Item')->findBy(['category' => $category]);
+            /**
+             * @var Item $lastObj
+             */
+            $lastObj = null;
+            foreach ($items as $item){
+
+                if (array_key_exists($category->getSlug(),$winners) && count($winners[$category->getSlug()]['1']->getVotes()) > count($item->getVotes())){
+                }else{
+                    $winners[$category->getSlug()]['1'] = $item;
+                }
+
+            }
+        }
+
+        return $winners;
+    }
 }
 
