@@ -27,8 +27,9 @@ class VoteController extends Controller
 
         $em->persist($vote);
         $em->flush();
+        $this->addFlash("success", "Votre vote à bien été pris en compte");
 
-        return new Response('voted');
+        return $this->redirectToRoute('homepage');
 
     }
 }

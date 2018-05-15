@@ -30,9 +30,8 @@
 
     <ul>
         <li>
-            {#<a href="{{ path('admin_post_index') }}">Back to the list</a>#}
+             <a href="{{ app.request.headers.get('referer') }}">Retour</a>
         </li>
-
 
     </ul>
 {% endblock %}

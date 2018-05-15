@@ -17,13 +17,13 @@
     {% include 'menu.html.twig' %}
 
     <div class="container">
-    {% if app.user %}
-        <div class="float-right">
-        <i class="fa fa-user"></i> Utilisateur : {{ app.user.username }}
+        {% if app.user %}
+            <div class="float-right">
+                {#<i class="fa fa-user"></i> Utilisateur : {{ app.user.username }}#}
 
-            {% if is_granted('ROLE_SUPER_ADMIN') %}TOP{% endif %}
-        </div>
-    {% endif  %}
+                {#{% if is_granted('ROLE_SUPER_ADMIN') %}TOP{% endif %}#}
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
 <div class="container">
@@ -39,6 +39,8 @@
     {% block body %}
         <h1>Page non trouvée</h1>
     {% endblock %}
+
+
 </div>
 {% block javascripts %}
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

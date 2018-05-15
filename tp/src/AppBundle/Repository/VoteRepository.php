@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\User;
+
 /**
  * VoteRepository
  *
@@ -10,4 +12,29 @@ namespace AppBundle\Repository;
  */
 class VoteRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param $number
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findXLastVotes($number)
+    {
+        return $this->createQueryBuilder('e')->
+        setMaxResults($number)->
+        orderBy('e.id','DESC')->
+        getQuery()->
+        getResult();
+
+    }
+
+    public function findLast5VoteForUser(User $user)
+    {
+        return $this->createQueryBuilder('e')->where('e.user = :user')
+            ->setParameter('user', $user)->
+            orderBy('e.id','DESC')->
+            setMaxResults(5)->
+            getQuery()->
+            getResult();
+
+    }
 }

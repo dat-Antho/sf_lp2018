@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Post;
+use AppBundle\Entity\User;
 use AppBundle\Service\ItemFinder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -19,9 +20,18 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
-        $items = $itemFinder->getItemForUser($user);
-        shuffle($items);
-        return $this->render('default/index.html.twig', ['items' => $items]);
+
+        $securityContext = $this->container->get('security.authorization_checker');
+        $items = null;
+        $last5UserVotes = null;
+        if ($securityContext->isGranted('IS_AUTHENTICATED_FULLY') or $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')){
+            $items = $itemFinder->getItemForUser($user);
+            shuffle($items);
+            $last5UserVotes = $em->getRepository('AppBundle:Vote')->findLast5VoteForUser($user);
+        }
+
+        $lastVotes = $em->getRepository('AppBundle:Vote')->findXLastVotes(10);
+        return $this->render('default/index.html.twig', ['items' => $items,'lastVotes' => $lastVotes,'lastUserVotes' => $last5UserVotes]);
     }
 
     /**
@@ -30,10 +40,13 @@ class DefaultController extends Controller
      */
     public function searchAction(Request $request, $word)
     {
+        $em = $this->getDoctrine()->getManager();
         $news = [];
 
         if ($word) {
             $news = $this->getDoctrine()->getRepository('AppBundle:Post')->search($word);
+        }else{
+            $news = $em->getRepository("AppBundle:Post")->findBy(['enable' => true]);
         }
         $searchForm = $this->createFormBuilder()
             ->add('word', TextType::class, ['label' => 'Recherche'])
