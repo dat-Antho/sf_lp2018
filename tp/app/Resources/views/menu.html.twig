@@ -17,6 +17,11 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('item_category_list') }}">Catégories de vote </a>
             </li>
+            {% if is_granted('ROLE_ADMIN') %}
+                <li class="nav-item">
+                    <a class="nav-link"  style="color:red" href="{{ path('easyadmin') }}">Back OFFICE </a>
+                </li>
+             {% endif %}
 
         </ul>
     </div>

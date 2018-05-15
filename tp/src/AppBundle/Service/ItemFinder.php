@@ -5,6 +5,7 @@ namespace AppBundle\Service;
 
 
 use AppBundle\Entity\Item;
+use AppBundle\Entity\ItemCategory;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -23,9 +24,12 @@ class ItemFinder
      * @param User $user
      * @return array
      */
-    public function getItemForUser(User $user)
+    public function getItemForUser(User $user, ItemCategory $itemCategory = null)
     {
      $items = $this->em->getRepository('AppBundle:Item')->findAll();
+     if ($itemCategory){
+         $items = $this->em->getRepository('AppBundle:Item')->findBy(['category' => $itemCategory]);
+     }
      $results = array();
      foreach ($items as $item){
         $asAlreadyVoted = $this->UserAlreadyVoted($user,$item);
@@ -66,10 +70,7 @@ class ItemFinder
         $winners = array();
         foreach ($categories as $category){
             $items = $this->em->getRepository('AppBundle:Item')->findBy(['category' => $category]);
-            /**
-             * @var Item $lastObj
-             */
-            $lastObj = null;
+
             foreach ($items as $item){
 
                 if (array_key_exists($category->getSlug(),$winners) && count($winners[$category->getSlug()]['1']->getVotes()) > count($item->getVotes())){

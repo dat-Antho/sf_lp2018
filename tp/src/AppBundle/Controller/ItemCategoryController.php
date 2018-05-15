@@ -24,7 +24,15 @@ class ItemCategoryController extends Controller
     /**
      * @Route("/item-category/{slug}", name="item_category_detail")
      */
-   public function detailAction(ItemCategory $itemCategory, ItemFinder $itemFinder ){
-
+   public function detailAction(ItemCategory $itemCategory, ItemFinder $itemFinder )
+   {
+       $winners = $itemFinder->findWinnerForEachCategory();
+       $listOfItems = $this->getDoctrine()->getRepository('AppBundle:Item')->findBy(['category' => $itemCategory]);
+       usort($listOfItems, function($a, $b) {
+           return count($a->getVotes() )- count($b->getVotes());
+       });
+       dump($listOfItems);
+       $items = $itemFinder->getItemForUser($this->getUser(),$itemCategory);
+       return $this->render('itemCategory/detail.html.twig',['items' => $items,'winners' => $winners,'itemCategory' => $itemCategory,'lines' => $listOfItems]);
    }
 }

@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {% for message in app.flashes('success') %}
+        <div class="flash-notice">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <h2>tu préfères</h2>
+
+    <h3> Le champion de cette catégorie est {{ winners[itemCategory.slug][1].titre }} avec {{ winners[itemCategory.slug][1].votes|length }} votes </h3>
+    {% if items %}
+        {# si au moins 2 item disponible alors on propose le vote#}
+        {% if items|length < 2 %}
+            Pas assez de choix pour le moment dans cette catégorie :)
+        {% else %}
+            <div class="container">
+                <div class="row">
+
+                    {% for item in items|slice(0, 2) %}
+                        <div class="col-md-6">
+                            <div class="card" style="max-width: 25rem;">
+                                <img class="card-img-top"
+                                     src="{% if item.imageName is not null %}
+                                {{ vich_uploader_asset(item, 'image') }}
+                               {% else %}https://picsum.photos/500?random
+                                {% endif %}" alt="Card image cap">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ item.titre }}</h5>
+                                    <p class="card-text">Some quick example text to build on the card title and make up the
+                                        bulk of the
+                                        card's content.</p>
+                                    <div class="text-center">
+                                        <a href="{{ path('voteForItem',{'slug' : item.slug}) }}"
+                                           class="btn btn-primary ">Voter</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        {% endif %}
+    {% else %}
+        Veuillez vous connecter pour pouvoir voter
+    {% endif %}
+
+    <h3> Petit classement</h3>
+    <ul>
+    {% for line in lines|reverse %}
+        <li>{{ line.titre }} : {{ line.votes|length }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
+
