@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\User;
+
 /**
  * ItemRepository
  *
@@ -10,4 +12,5 @@ namespace AppBundle\Repository;
  */
 class ItemRepository extends \Doctrine\ORM\EntityRepository
 {
+
 }

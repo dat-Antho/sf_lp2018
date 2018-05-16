@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-
+use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Item
  *
@@ -85,15 +85,23 @@ class Item
      */
     private $users;
 
+    /**
+     * @Gedmo\Slug(fields={"titre"},updatable=false)
+     * @ORM\Column(length=128, unique=true)
+     */
+    private $slug;
+
+//    /**
+//     * @var integer
+//     *
+//     * @ORM\Column(name="nbVote", type="integer", nullable=true)
+//     */
+//    private $nbVote;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="nbVote", type="integer", nullable=true)
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Vote", mappedBy="item", fetch="EAGER")
      */
-    private $nbVote;
-
-
+    private $votes;
 
     /**
      * Get id
@@ -331,6 +339,7 @@ class Item
     public function __construct()
     {
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->votes = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -390,4 +399,55 @@ class Item
     {
         return $this->users;
     }
+
+    /**
+     * Add vote
+     *
+     * @param \AppBundle\Entity\Vote $vote
+     *
+     * @return Item
+     */
+    public function addVote(\AppBundle\Entity\Vote $vote)
+    {
+        $this->votes[] = $vote;
+
+        return $this;
+    }
+
+    /**
+     * Remove vote
+     *
+     * @param \AppBundle\Entity\Vote $vote
+     */
+    public function removeVote(\AppBundle\Entity\Vote $vote)
+    {
+        $this->votes->removeElement($vote);
+    }
+
+    /**
+     * Get votes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVotes()
+    {
+        return $this->votes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param mixed $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+
 }

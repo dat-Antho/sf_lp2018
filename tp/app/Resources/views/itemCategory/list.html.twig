@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="container">
+        <h2>Les catégories</h2>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Winner</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in list %}
+                <tr>
+                    <td> {{ item.titre }}</td>
+
+                    {% if  winners[item.slug] is defined%}
+                        <td> {{ winners[item.slug][1].titre }}</td>
+                    {% endif %}
+
+                    <td><a href="{{ path('item_category_detail',{'slug' : item.slug}) }}">Voter pour des propositions de cette catégorie</a></td>
+                </tr>
+            {% endfor %}
+
+
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

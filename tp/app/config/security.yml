@@ -12,9 +12,9 @@ security:
                 toto:
                   password: titi
                   roles: 'ROLE_USER'
-                admin:
-                  password: admin
-                  roles: 'ROLE_ADMIN'
+#                admin:
+#                  password: admin
+#                  roles: 'ROLE_ADMIN'
                 superadmin:
                   password: superadmin
                   roles: 'ROLE_SUPER_ADMIN'
@@ -34,7 +34,7 @@ security:
             pattern: ^/
             form_login:
                 provider: fos_userbundle
-                default_target_path: /admin
+                default_target_path: /
                 #csrf_provider: security.csrf.token_manager # Use form.csrf_provider instead for Symfony <2.4
             logout:       true
             anonymous:    true
@@ -56,4 +56,5 @@ security:
         FOS\UserBundle\Model\UserInterface: bcrypt
     role_hierarchy:
             ROLE_ADMIN:       ROLE_USER
+            ROLE_MEMBER:      ROLE_USER
             ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
